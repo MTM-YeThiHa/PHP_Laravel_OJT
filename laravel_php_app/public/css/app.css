@@ -1,0 +1,10 @@
+/* Your custom CSS file or in a <style> tag */
+.img-sm {
+    max-width: 50px; /* Adjust to your desired width */
+    max-height: 100px; /* Adjust to your desired height */
+}
+
+body {
+    background: linear-gradient(to right, rgb(185, 43, 39), rgb(21, 101, 192));
+}
+

@@ -1,0 +1,28 @@
+/* Clear out these styles to start fresh or use this as a base! */
+.rainbow-text .char { 
+  
+  color: hsl(
+    calc(360deg * var(--char-percent)
+    ), 
+    90%, 
+    65%
+  );
+ 
+}
+
+.rainbow-text.animated .char {
+  animation: rainbow-colors 2s linear infinite;
+  animation-delay: calc(-2s * var(--char-percent));
+}
+/* Unfortunately, browsers try to take the shortest distance between transition/animation properties, so a simple `0turn` to `1turn` doesn't get the proper effect. */
+@keyframes rainbow-colors {
+  0% { color: hsl(197, 97%, 66%, 1); }
+  25% { color: hsl(0, 100%, 100%, 1); }
+  50% { color: hsl(348, 83%, 81%, 1); }
+  75% { color: hsl(.75turn, 90%, 65%); }
+  100% { color: hsl(1turn, 90%, 65%); }
+}
+.card-header {
+  background-color: linear-gradient(to right, rgb(189, 195, 199), rgb(44, 62, 80));
+  /* opacity: 0.8; */
+}
