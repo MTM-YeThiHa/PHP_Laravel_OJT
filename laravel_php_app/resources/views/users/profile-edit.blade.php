@@ -55,7 +55,8 @@
                 </select>
                 @else
                 <select class="form-control @error('type') is-invalid @enderror" name="type" disabled>
-                  <option value="{{ $user->type }}" selected>{{ config('usertype.user_types')[$user->type] }}</option>
+                  <option value="0" {{ $user->type == '0' ? 'selected' : '' }}>Admin</option>
+                  <option value="1" {{ $user->type == '1' ? 'selected' : '' }}>User</option>
                 </select>
                 @endif
                 @error('type')

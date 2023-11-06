@@ -46,12 +46,7 @@ class UserDao implements UserDaoInterface
     $user->email = $validated['email'];
     $user->password = Hash::make($validated['password']);
     $user->profile = $profileName ?? '';
-    // $user->type = $validated['type'] ?? '1';
-    if (!isset($validated['type'])) {
-      $user->type = '1';
-    } else {
-      $user->type = $validated['type'];
-    };
+    $user->type = $validated['type'] ?? '1';
     $user->phone = $validated['phone'] ?? '';
     $user->dob = $validated['dob'] ?? '';
     $user->address = $validated['address'] ?? '';

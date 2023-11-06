@@ -33,13 +33,12 @@
               <div class="col-md-6">
                 @if(old('type') == '0')
                 <input id="type" type="text" class="form-control" name="type" value="Admin" readonly="readonly" />
-                @else
-                <input id="type" type="text" class="form-control" name="type" value="{{config('usertype.user_types')[old('type')]}}" readonly="readonly" />
+                @else(old('type') == '1')
+                <input id="type" type="text" class="form-control" name="type" value="User" readonly="readonly" />
                 @endif
                 <select class="form-control @error('type') is-invalid @enderror hide-input" name="type" readonly="readonly">
-                  <option value="{{ old('type') }}" selected>{{ config('usertype.user_types')[old('type')] }}</option>
+                  <option value="{{ old('type') }}" selected></option>
                 </select>
-
               </div>
             </div>
 

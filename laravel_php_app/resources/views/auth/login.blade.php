@@ -5,6 +5,15 @@
 <div class="container">
     <div class="row">
         <div class="col-md-6 mx-auto">
+            @if (Session::has('message'))
+            <div class="auto-close alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                <div>
+                    <span><i class="fa-solid fa-check"></i></span>
+                    {{session::get('message')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
             <div class="card">
                 <form action="{{route('login')}}" method="POST" class="box">
                     @csrf
@@ -23,7 +32,7 @@
                     </span>
                     @enderror
                     <a class="text-info" href="{{ route('forget.password.get') }}">Forgot password?</a>
-                    <div >
+                    <div>
                         <button class="btn-submit" type="submit">
                             {{__('Login')}}
                         </button>

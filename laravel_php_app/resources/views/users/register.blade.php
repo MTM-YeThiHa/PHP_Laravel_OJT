@@ -7,15 +7,6 @@
                 <div class="card-header text-bg-success">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    @if (Session::has('message'))
-                    <div class="auto-close alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
-                        <div>
-                            <span><i class="fa-solid fa-check"></i></span>
-                            {{session::get('message')}}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    </div>
-                    @endif
                     <form method="POST" action="{{ route('userRegister') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">

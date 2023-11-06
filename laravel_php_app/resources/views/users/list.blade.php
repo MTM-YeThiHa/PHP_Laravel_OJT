@@ -72,7 +72,7 @@
                   <td>{{$user->email}}</td>
                   <td>{{$user->created_user}}</td>
                   <td>
-                    {{ config('usertype.user_types')[$user->type] }}
+                    {{$user->type == '0' ? 'Admin' : ($user->type == '1' ? 'User' : '')}}
                   </td>
                   <td>{{$user->phone}}</td>
                   <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
@@ -102,7 +102,7 @@
                   <div class="row">
                     <div class="col-lg-4 col-md-12 col-sm-6 text-center">
                       <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
-                        <img class="card-img-top object-fit-cover" id="user-profile"  src="" alt="Profile Image" class="preview-profile">
+                        <img class="card-img-top object-fit-cover" id="user-profile" src="" alt="Profile Image" class="preview-profile">
                       </div>
                     </div>
                     <div class="col-lg-8 col-md-12 col-sm-6">

@@ -1,12 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<!-- Styles -->
-<!-- <link href="{{ asset('css/lib/jquery.dataTables.min.css') }}" rel="stylesheet">
-<link href="{{ asset('css/post-list.css') }}" rel="stylesheet"> -->
-
 <!-- Script -->
-<!-- <script src="{{ asset('js/lib/moment.min.js') }}"></script>
-<script src="{{ asset('js/lib/jquery.dataTables.min.js') }}"></script> -->
 <script src="{{ asset('js/post-list.js') }}"></script>
 <div class="container">
     <div class="row justify-content-center">
@@ -65,7 +59,7 @@
                                     <td>{{$post->description}}</td>
                                     <td>{{$post->created_user}}</td>
                                     <td>{{date('Y/m/d', strtotime($post->created_at))}}</td>
-                                    @if(auth()->user() && (auth()->user()->type == 0 || auth()->user()->type == 1))
+                                    @if(auth()->user() && (auth()->user()->type == 0 || auth()->user()->type == 1)&& $post->created_user_id == auth()->user()->id)
                                     <td>
                                         <a type="button" class="btn btn-primary" href="/post/edit/{{$post->id}}"><i class="fa fa-edit"></i>Edit</a>
                                         <button onclick="showDeleteConfirm({{json_encode($post)}})" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#post-delete-popup"><i class="fa fa-trash"></i>Delete</button>

@@ -100,9 +100,7 @@ class RegisterController extends Controller
     public function submitUserRegistration(UserSignUpRequest $request)
     {
         $validated = $request->validated();
-        print_r($validated);
         $user = $this->authInterface->saveUser($request);
-        print_r($user);
-        return redirect()->route('userRegister')->with('message', 'user create successfully');
+        return redirect()->route('login')->with('message', 'user create successfully');
     }
 }
