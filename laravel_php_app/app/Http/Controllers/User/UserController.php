@@ -153,10 +153,10 @@ class UserController extends Controller
    * @param string $userid user id
    * @return View user list
    */
-  public function deleteUserById($userId)
+  public function deleteUserById(Request $request)
+
   {
-    $deletedUserId = Auth::user()->id;
-    $msg = $this->userInterface->deleteUserById($userId, $deletedUserId);
-    return response($msg, 204);
+    $msg = $this->userInterface->deleteUserById($request);
+    return redirect()->route('userlist');
   }
 }

@@ -42,7 +42,7 @@ interface UserDaoInterface
    * @param string $deletedUserId deleted user id
    * @return string $message message for success or not
    */
-  public function deleteUserById($id, $deletedUserId);
+  public function deleteUserById(Request $request);
 
   /**
    * To save user that from api request

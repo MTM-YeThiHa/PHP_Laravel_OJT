@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             [
               'name' => 'admin',
               'email' => 'scm.yth.yethiha@gmail.com',
-              'password' => Hash::make('password'),
+              'password' => Hash::make('12345678'),
               'profile' => '1588646773.png',
               'type' => '0',
               'created_user_id' => 1,

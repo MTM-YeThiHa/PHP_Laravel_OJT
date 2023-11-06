@@ -69,6 +69,7 @@ function showUserDetail(userInfo) {
  */
 function showDeleteConfirm(userInfo) {
     $("#user-delete #user-id").text(userInfo.id);
+    $("#deleteId").val(userInfo.id);
     $("#user-delete #user-name").text(userInfo.name);
     if (userInfo.type == "0") {
         $("#user-delete #user-type").text("Admin");
@@ -83,21 +84,21 @@ function showDeleteConfirm(userInfo) {
     $("#user-delete #user-address").text(userInfo.address);
 }
 
-/**
- * To delete user by id
- * @returns void
- */
-async function deleteUserById(csrf_token) {
-    await $.ajax({
-        url: "/user/delete/" + $("#user-delete #user-id").text(),
-        type: "DELETE",
-        data: {
-            _token: csrf_token
-        },
-        dataType: "text",
-        success: function(result) {
-            console.log(result);
-            location.reload();
-        }
-    });
-}
+// /**
+//  * To delete user by id
+//  * @returns void
+//  */
+// async function deleteUserById(csrf_token) {
+//     await $.ajax({
+//         url: "/user/delete/" + $("#user-delete #user-id").text(),
+//         type: "DELETE",
+//         data: {
+//             _token: csrf_token
+//         },
+//         dataType: "text",
+//         success: function(result) {
+//             console.log(result);
+//             location.reload();
+//         }
+//     });
+// }

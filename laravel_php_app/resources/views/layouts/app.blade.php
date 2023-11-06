@@ -4,15 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>PHP Bulletin Board</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
-    <title>PHP Bulletin Board</title>
     <!--Style -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <!-- Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js crossorigin="anonymous""></script>
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
@@ -30,7 +33,7 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
-                    <ul class="nav nav-pills mr-auto">
+                    <ul class="navbar-nav mr-auto">
                         @if(Auth::user() && Auth::user()->type == '0')
                         <li class="nav-item">
                             <a class="nav-link" data-bs-toggle="" href="{{url('/user/list')}}"><i class="fa-solid fa-user mx-1"></i>Users</a>
@@ -42,11 +45,14 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="nav nav-pills ml-auto">
+                    <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            <a class="nav-link" data-bs-toggle="" href="{{ route('login') }}"><i class="fa-solid fa-right-to-bracket mx-1"></i>{{ __('Login') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="" href="{{ url('/register') }}"><i class="fa-solid fa-user-tie mx-1"></i>{{ __('Register') }}</a>
                         </li>
                         @else
                         @if(Auth::user()->type == '0')
@@ -58,7 +64,7 @@
                         @endif
                         <li class="nav-item dropdown">
 
-                            <a id="navbarDropdown" class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 <!-- <img src="{{asset('storage/images/default_profile.jpg')}}" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> -->
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>

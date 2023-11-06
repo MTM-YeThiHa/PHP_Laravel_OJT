@@ -40,16 +40,23 @@ class UserDao implements UserDaoInterface
   //save User
   public function saveUser($validated)
   {
-    $profileName = session('profileName');
+    $profileName = session('profileName') ?? '';
     $user = new User();
     $user->name = $validated['name'];
     $user->email = $validated['email'];
     $user->password = Hash::make($validated['password']);
-    $user->profile = $profileName;
-    $user->type = $validated['type'];
-    $user->phone = $validated['phone'];
-    $user->dob = $validated['dob'];
-    $user->address = $validated['address'];
+    $user->profile = $profileName ?? '';
+    // $user->type = $validated['type'] ?? '1';
+    if (!isset($validated['type'])) {
+      $user->type = '1';
+    } else {
+      $user->type = $validated['type'];
+    };
+    $user->phone = $validated['phone'] ?? '';
+    $user->dob = $validated['dob'] ?? '';
+    $user->address = $validated['address'] ?? '';
+    $user->created_user_id = Auth::user()->id ?? '1';
+    $user->updated_user_id = Auth::user()->id ?? '1';
     $user->save();
     return $user;
   }
@@ -87,16 +94,14 @@ class UserDao implements UserDaoInterface
    * @param string $deletedUserId deleted user id
    * @return string $message message for success or not
    */
-  public function deleteUserById($id, $deletedUserId)
+  public function deleteUserById(Request $request)
   {
-    $user = User::find($id);
+    $user = User::find($request['deleteId']);
     if ($user) {
-      $user->deleted_user_id = $deletedUserId;
+      $user->deleted_user_id = Auth::user()->id;
       $user->save();
       $user->delete();
-      return 'Deleted Successfully!';
     }
-    return 'User Not Found!';
   }
 
   public function userSearch(Request $request)
@@ -116,8 +121,7 @@ class UserDao implements UserDaoInterface
         if ($name) {
           $query->where('user.name', 'like', '%' . $name . '%');
           $searchKeywords[] = "Name: " . $name;
-        }
-        elseif ($email) {
+        } elseif ($email) {
           $query->orWhere('user.email', 'like', '%' . $email . '%');
           $searchKeywords[] = "Email: " . $email;
         }

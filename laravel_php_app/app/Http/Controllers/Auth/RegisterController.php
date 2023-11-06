@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Auth;
 use App\Contracts\Services\Auth\AuthServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\Requests\UserSignUpRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class RegisterController extends Controller
 {
@@ -60,32 +63,33 @@ class RegisterController extends Controller
     protected function submitRegistrationView(UserRegisterRequest $request)
     {
         $validated = $request->validated();
-        $fileName = time() . Auth::user()->id .'.' . $request->file('profile')->getClientOriginalExtension();
-        $request->file('profile')->storeAs('public/images/',$fileName);
+        $fileName = time() . Auth::user()->id . '.' . $request->file('profile')->getClientOriginalExtension();
+        $request->file('profile')->storeAs('public/images/', $fileName);
         session(['profileName' => $fileName]);
         return redirect()
-        ->route('register.confirm')
-        ->withInput();
+            ->route('register.confirm')
+            ->withInput();
     }
 
     /**
-   * To show registration view
-   *
-   * @return View registration confirm view
-   */
-    protected function showRegistrationConfirmView() {
+     * To show registration view
+     *
+     * @return View registration confirm view
+     */
+    protected function showRegistrationConfirmView()
+    {
         if (old()) {
             return view('auth.register-confirm');
         }
         return redirect()
-         ->route('userlist');
+            ->route('userlist');
     }
 
-    protected function submitRegistrationConfirmView(Request $request) 
+    protected function submitRegistrationConfirmView(Request $request)
     {
         $user = $this->authInterface->saveUser($request);
         return redirect()
-          ->route('userlist');
+            ->route('userlist');
     }
 
     public function showUserRegistration()
@@ -93,9 +97,12 @@ class RegisterController extends Controller
         return view('users.register');
     }
 
-    public function submitUserRegistration(Request $request)
+    public function submitUserRegistration(UserSignUpRequest $request)
     {
-        $validated = $request->validate();
-        
+        $validated = $request->validated();
+        print_r($validated);
+        $user = $this->authInterface->saveUser($request);
+        print_r($user);
+        return redirect()->route('userRegister')->with('message', 'user create successfully');
     }
 }

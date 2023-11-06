@@ -2,12 +2,12 @@
 
 @section('content')
 <!-- Styles -->
-<link href="{{ asset('css/lib/jquery.dataTables.min.css') }}" rel="stylesheet">
+<!-- <link href="{{ asset('css/lib/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
 <link href="{{ asset('css/user-list.css') }}" rel="stylesheet">
 
 <!-- Script -->
 <script src="{{ asset('js/lib/moment.min.js') }}"></script>
-<script src="{{ asset('js/lib/jquery.dataTables.min.js') }}"></script>
+<!-- <script src="{{ asset('js/lib/jquery.dataTables.min.js') }}"></script> -->
 <script src="{{ asset('js/user-list.js') }}"></script>
 
 <div class="container">
@@ -239,7 +239,12 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button onclick="deleteUserById({{json_encode(csrf_token())}})" type="button" class="btn btn-danger">Delete</button>
+                  <form action="{{route('user.delete')}}" method="post">
+                    <input type="hidden" name="deleteId" id="deleteId">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
                 </div>
               </div>
             </div>

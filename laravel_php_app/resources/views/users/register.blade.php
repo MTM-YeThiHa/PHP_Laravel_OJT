@@ -1,13 +1,22 @@
 @extends('layouts.app')
 @section('content')
 <div class="container">
-<div class="row justify-content-center">
+    <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-bg-success">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+                    @if (Session::has('message'))
+                    <div class="auto-close alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+                        <div>
+                            <span><i class="fa-solid fa-check"></i></span>
+                            {{session::get('message')}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    @endif
+                    <form method="POST" action="{{ route('userRegister') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label for="name" class="col-md-4 col-form-label text-md-right required">{{ __('Name') }}</label>
@@ -50,7 +59,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right required">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password-confirmation" required autocomplete="new-password">
                             </div>
                         </div>
                         <div class="form-group row mb-0">

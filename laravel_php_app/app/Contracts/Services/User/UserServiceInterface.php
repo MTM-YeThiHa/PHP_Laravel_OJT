@@ -42,7 +42,7 @@ interface UserServiceInterface
    * @param string $deletedUserId deleted user id
    * @return string $message message for success or not
    */
-  public function deleteUserById($id, $deletedUserId);
+  public function deleteUserById(Request $request);
 
   /**
    * To store profile picture under temp folder.

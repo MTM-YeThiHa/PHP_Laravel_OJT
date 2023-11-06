@@ -57,9 +57,9 @@ class UserService implements UserServiceInterface
    * @param string $deletedUserId deleted user id
    * @return string $message message for success or not
    */
-  public function deleteUserById($id, $deletedUserId)
+  public function deleteUserById(Request $request)
   {
-    return $this->userDao->deleteUserById($id, $deletedUserId);
+    return $this->userDao->deleteUserById($request);
   }
 
   //storeProfile Under Temp
