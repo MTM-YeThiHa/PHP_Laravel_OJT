@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+
+<!-- Style -->
+<link rel="stylesheet" href="{{asset('css/post-list.css')}}">
 <!-- Script -->
 <script src="{{ asset('js/post-list.js') }}"></script>
 <div class="container">

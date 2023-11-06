@@ -37,7 +37,7 @@
               <label class="mx-1">To:</label>
               <input class="search-input  form-control" id="dateEnd" type="date" name="toDate" />
             </div>
-            <button type="submit" class="btn btn-primary  search-btn col-auto" id="search-click">Search</button>
+            <button type="submit" class="btn btn-success  search-btn" id="search-click">Search</button>
 
           </form>
           <div class="table-responsive">
@@ -67,7 +67,7 @@
                 <tr>
                   <td>{{$user->id}}</td>
                   <td>
-                    <a class="user-name text-decoration-none" onclick="showUserDetail({{json_encode($user)}})" data-toggle="modal" data-target="#user-detail-popup">{{$user->name}}</a>
+                    <a class="user-name text-decoration-none " onclick="showUserDetail({{json_encode($user)}})" data-toggle="modal" data-target="#user-detail-popup">{{$user->name}}</a>
                   </td>
                   <td>{{$user->email}}</td>
                   <td>{{$user->created_user}}</td>

@@ -1,29 +1,22 @@
-.header-cell {
-  min-width: 130px;
-}
-
-.user-name {
+.post-name {
   cursor: pointer;
   color: chocolate !important;
 }
 
-.user-name:hover {
+.post-name:hover {
   text-decoration: underline !important;
-  cursor: pointer;
 }
 
-.preview-profile {
-  width: 170px;
-  border: 1px solid rgb(206, 212, 218);
-  border-radius: 3px;
-}
-
-.profile-text {
+.post-text {
   color: chocolate;
 }
 
-.delete-confirm-header {
-  color: red;
+.header-btn {
+  color: white !important;
+  padding: 6px 10px;
+  height: 37px;
+  margin: 0px 5px;
+  width: 150px;
 }
 
 .search-input {
@@ -38,7 +31,7 @@
 
 .search-btn {
 width: 150px;
-margin: 0 auto;
+margin: 0px 5px;
 }
 
 @media only screen and (max-width: 600px) {

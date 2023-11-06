@@ -25,7 +25,7 @@ class AuthDao implements AuthDaoInterface
     $user->email = $request['email'];
     $user->password = Hash::make($request['password']);
     $user->profile = $request['profile'];
-    $user->type = $request['type'] ?? '1';
+    $user->type = $request['type'] ?? 1;
     $user->phone = $request['phone'];
     $user->dob = $request['dob'];
     $user->address = $request['address'];
