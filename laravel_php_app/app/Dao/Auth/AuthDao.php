@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Hash;
  */
 class AuthDao implements AuthDaoInterface
 {
-    /**
+  /**
    * To Save User with values from request
    * @param Request $request request including inputs
    * @return Object created user object
@@ -27,7 +27,7 @@ class AuthDao implements AuthDaoInterface
     $user->profile = $request['profile'] ?? '';
     $user->type = $request['type'] ?? 1;
     $user->phone = $request['phone'] ?? '';
-    $user->dob = $request['dob'] ?? '';
+    $user->dob = $request['dob'] ?? null;
     $user->address = $request['address'];
     $user->created_user_id = Auth::user()->id ?? 1;
     $user->updated_user_id = Auth::user()->id ?? 1;
