@@ -109,8 +109,8 @@
                           <i class="profile-text" id="user-name"></i>
                         </label>
                       </div>
+                      
                       <div class="row">
-                        @foreach ($userList as $user)
                         <label class="col-md-3 text-md-left">{{ __('Type') }}</label>
                         @if($user->type == '0')
                         <label class="col-md-9 text-md-left">
@@ -121,8 +121,8 @@
                           <i class="profile-text" id="user-type">User</i>
                         </label>
                         @endif
-                        @endforeach
                       </div>
+                      
                       <div class="row">
                         <label class="col-md-3 text-md-left">{{ __('Email') }}</label>
                         <label class="col-md-9 text-md-left">
