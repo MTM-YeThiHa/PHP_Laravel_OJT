@@ -31,7 +31,7 @@
               <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
 
               <div class="col-md-6">
-                <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" value="{{ old('new_password') }}" autocomplete="current-password">
+                <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" value="{{ old('new_password') }}">
                 @error('new_password')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -44,7 +44,7 @@
               <label for="password" class="col-md-4 col-form-label text-md-right">New Confirm Password</label>
 
               <div class="col-md-6">
-                <input id="new_confirm_password" type="password" class="form-control @error('new_confirm_password') is-invalid @enderror" name="new_confirm_password" value="{{ old('new_confirm_password') }}" autocomplete="current-password">
+                <input id="new_confirm_password" type="password" class="form-control @error('new_confirm_password') is-invalid @enderror" name="new_confirm_password" value="{{ old('new_confirm_password') }}">
                 @error('new_confirm_password')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
