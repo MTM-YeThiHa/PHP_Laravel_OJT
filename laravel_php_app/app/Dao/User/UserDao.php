@@ -107,29 +107,31 @@ class UserDao implements UserDaoInterface
     $toDate = $request->input('toDate');
 
     $searchKeywords = [];
-
     $userList = DB::table('users as user')
       ->join('users as created_user', 'user.created_user_id', '=', 'created_user.id')
       ->join('users as updated_user', 'user.updated_user_id', '=', 'updated_user.id')
       ->select('user.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-      ->where(function ($query) use ($name, $email, &$searchKeywords) {
-        if ($name) {
-          $query->where('user.name', 'like', '%' . $name . '%');
-          $searchKeywords[] = "Name: " . $name;
-        } elseif ($email) {
-          $query->orWhere('user.email', 'like', '%' . $email . '%');
-          $searchKeywords[] = "Email: " . $email;
-        }
-      })
-      ->where(function ($query) use ($fromDate, $toDate, &$searchKeywords) {
-        if ($fromDate && $toDate) {
-          $query->whereBetween('user.created_at', [$fromDate, $toDate]);
-          $searchKeywords[] = "Date Range: $fromDate - $toDate";
-        }
-      })
-      ->whereNull('user.deleted_at')
-      ->paginate(5);
+      ->whereNull('user.deleted_at');
 
+    if ($name && $email) {
+      $userList->where(function ($query) use ($name, $email, &$searchKeywords) {
+        $query->where('user.name', 'like', '%' . $name . '%');
+        $query->where('user.email', 'like', '%' . $email . '%');
+        $searchKeywords[] = "Name: " . $name;
+        $searchKeywords[] = "Email: " . $email;
+      });
+    } elseif ($name) {
+      $userList->where('user.name', 'like', '%' . $name . '%');
+      $searchKeywords[] = "Name: " . $name;
+    } elseif ($email) {
+      $userList->where('user.email', 'like', '%' . $email . '%');
+      $searchKeywords[] = "Email: " . $email;
+    }
+    if ($fromDate && $toDate) {
+      $userList->whereBetween('user.created_at', [$fromDate, $toDate]);
+      $searchKeywords[] = "Date Range: $fromDate - $toDate";
+    }
+    $userList = $userList->paginate(5);
     // return view('search-results', ['userList' => $userList, 'searchKeywords' => $searchKeywords]);
     return $userList;
   }

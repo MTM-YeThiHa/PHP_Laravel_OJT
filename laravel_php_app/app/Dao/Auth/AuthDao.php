@@ -24,10 +24,10 @@ class AuthDao implements AuthDaoInterface
     $user->name = $request['name'];
     $user->email = $request['email'];
     $user->password = Hash::make($request['password']);
-    $user->profile = $request['profile'];
+    $user->profile = $request['profile'] ?? '';
     $user->type = $request['type'] ?? 1;
-    $user->phone = $request['phone'];
-    $user->dob = $request['dob'];
+    $user->phone = $request['phone'] ?? '';
+    $user->dob = $request['dob'] ?? '';
     $user->address = $request['address'];
     $user->created_user_id = Auth::user()->id ?? 1;
     $user->updated_user_id = Auth::user()->id ?? 1;

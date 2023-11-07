@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <!-- Styles -->
 <!-- <link href="{{ asset('css/lib/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
@@ -20,7 +19,6 @@
         <div class="card-body">
           <form method="post" action="{{ route('userSearch') }}" class="col-auto d-flex">
             @csrf
-
             <div class="d-flex mx-2 justify-content-center align-items-center">
               <label class="mx-1">Name:</label>
               <input class="search-input  form-control" type="text" id="search-name" name="name" />
@@ -38,7 +36,6 @@
               <input class="search-input  form-control" id="dateEnd" type="date" name="toDate" />
             </div>
             <button type="submit" class="btn btn-success  search-btn" id="search-click">Search</button>
-
           </form>
           <div class="table-responsive">
             <table class="table table-hover table-bordered">
@@ -113,8 +110,9 @@
                         </label>
                       </div>
                       <div class="row">
+                        @foreach ($userList as $user)
                         <label class="col-md-3 text-md-left">{{ __('Type') }}</label>
-                        @if($userList[0]->type == '0')
+                        @if($user->type == '0')
                         <label class="col-md-9 text-md-left">
                           <i class="profile-text" id="user-type">Admin</i>
                         </label>
@@ -123,6 +121,7 @@
                           <i class="profile-text" id="user-type">User</i>
                         </label>
                         @endif
+                        @endforeach
                       </div>
                       <div class="row">
                         <label class="col-md-3 text-md-left">{{ __('Email') }}</label>
