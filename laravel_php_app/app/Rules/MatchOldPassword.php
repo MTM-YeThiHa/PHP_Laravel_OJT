@@ -6,6 +6,8 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Hash;
 
+use function Laravel\Prompts\password;
+
 class MatchOldPassword implements ValidationRule
 {
     /**
@@ -15,7 +17,10 @@ class MatchOldPassword implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-         Hash::check($value, auth()->user()->password);
+      $result = Hash::check($value, auth()->user()->password);
+        if(!$result) {
+          $fail("The :attribute is not match with old password.");
+        }
     }
 
      /**

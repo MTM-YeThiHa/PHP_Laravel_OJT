@@ -17,21 +17,21 @@
           {{__('User List')}}
         </div>
         <div class="card-body">
-          <form method="post" action="{{ route('userSearch') }}" class="col-auto d-flex">
+          <form method="post" action="{{ route('userSearch') }}" class="col-auto d-flex res-form">
             @csrf
-            <div class="d-flex mx-2 justify-content-center align-items-center">
+            <div class="d-flex mx-2 justify-content-center align-items-center search-lbl">
               <label class="mx-1">Name:</label>
               <input class="search-input  form-control" type="text" id="search-name" name="name" />
             </div>
-            <div class="d-flex mx-2 justify-content-center align-items-center">
+            <div class="d-flex mx-2 justify-content-center align-items-center search-lbl">
               <label class="mx-1">Email:</label>
               <input class="search-input  form-control" type="text" id="search-email" name="email" />
             </div>
-            <div class="d-flex mx-2 justify-content-center align-items-center">
+            <div class="d-flex mx-2 justify-content-center align-items-center search-lbl">
               <label class="mx-1">From:</label>
               <input class="search-input  form-control" id="dateStart" type="date" name="fromDate" />
             </div>
-            <div class="d-flex mx-2 justify-content-center align-items-center">
+            <div class="d-flex mx-2 justify-content-center align-items-center search-lbl">
               <label class="mx-1">To:</label>
               <input class="search-input  form-control" id="dateEnd" type="date" name="toDate" />
             </div>
@@ -109,20 +109,16 @@
                           <i class="profile-text" id="user-name"></i>
                         </label>
                       </div>
-                      
                       <div class="row">
                         <label class="col-md-3 text-md-left">{{ __('Type') }}</label>
-                        @if($user->type == '0')
                         <label class="col-md-9 text-md-left">
-                          <i class="profile-text" id="user-type">Admin</i>
+                          <i class="profile-text" id="user-type">
+                            @foreach ($userList as $user)
+                            {{ $user->type == '0' ? 'Admin' : 'User' }}
+                            @endforeach
+                          </i>
                         </label>
-                        @else
-                        <label class="col-md-9 text-md-left">
-                          <i class="profile-text" id="user-type">User</i>
-                        </label>
-                        @endif
                       </div>
-                      
                       <div class="row">
                         <label class="col-md-3 text-md-left">{{ __('Email') }}</label>
                         <label class="col-md-9 text-md-left">
