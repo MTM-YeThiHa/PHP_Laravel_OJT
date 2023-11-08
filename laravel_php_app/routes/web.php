@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\File\FileController;
-use App\Http\Controllers\Home\HomeController;
 use App\Http\Controllers\Post\PostController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +38,6 @@ Route::get('/', function () {
     return redirect()->route('postlist');
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 //visitor, user, admin authorized
 
 // 'Post\PostController@showPostList'
