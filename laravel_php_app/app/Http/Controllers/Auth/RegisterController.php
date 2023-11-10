@@ -64,11 +64,11 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
         $fileName = time() . Auth::user()->id . '.' . $request->file('profile')->getClientOriginalExtension();
-        $request->file('profile')->storeAs('public/images/', $fileName);
-        session(['profileName' => $fileName]);
+        $request->file('profile')->storeAs('public/profiles/', $fileName);   
         return redirect()
             ->route('register.confirm')
-            ->withInput();
+            ->withInput()
+            ->with('profile', $fileName);
     }
 
     /**
@@ -89,7 +89,7 @@ class RegisterController extends Controller
     {
         $user = $this->authInterface->saveUser($request);
         return redirect()
-            ->route('userlist');
+            ->route('userlist')->with('message', 'User created successfully');
     }
 
     public function showUserRegistration()
@@ -101,6 +101,6 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
         $user = $this->authInterface->saveUser($request);
-        return redirect()->route('login')->with('message', 'user create successfully');
+        return redirect()->route('login')->with('message', 'User signup successfully');
     }
 }

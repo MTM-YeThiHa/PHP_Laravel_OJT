@@ -81,9 +81,9 @@ class UserController extends Controller
     $user = $this->userInterface->getUserById($userId);
 
     // Assuming the user's profile image path is stored in the 'profile_image' field.
-    $profileImagePath = $user->profile_image;
+    // $profileImagePath = $user->profile_image;
 
-    return view('users.profile', compact('user', 'profileImagePath'));
+    return view('users.profile', compact('user'));
   }
 
 
@@ -108,17 +108,16 @@ class UserController extends Controller
     $validated = $request->validated();
     if ($request->hasFile('profile')) {
       $fileName = time() . Auth::user()->id . '.' . $request->file('profile')->getClientOriginalExtension();
-      $request->file('profile')->storeAs('public/images/', $fileName);
+      $request->file('profile')->storeAs('public/profiles/', $fileName);
       session(['profileName' => $fileName]);
     } else {
-      $profileName = Auth::user()->profile;
-      session([
-        'profileName' => $profileName,
-      ]);
+      $profileName = $request->user()->profile;
+      $fileName = $profileName;
     }
     return redirect()
       ->route('profile.edit.confirm')
-      ->withInput();
+      ->withInput()
+      ->with('profile', $fileName);
   }
 
   //showEditProfileConfirmView
@@ -127,7 +126,7 @@ class UserController extends Controller
     if (old()) {
       return view('users.profile-edit-confirm');
     }
-    return redirect()->route('profile');
+    return redirect()->route('userlist')->with('message', 'user created successfully');
   }
 
   /**
@@ -139,7 +138,7 @@ class UserController extends Controller
   public function submitProfileEditConfirmView(Request $request)
   {
     $user = $this->userInterface->updateUser($request);
-    return redirect()->route('profile');
+    return redirect()->route('profile')->with('message', 'User profile edited successfully');
   }
 
   public function userSearch(Request $request)
@@ -157,6 +156,6 @@ class UserController extends Controller
 
   {
     $msg = $this->userInterface->deleteUserById($request);
-    return redirect()->route('userlist');
+    return redirect()->route('userlist')->with('message', 'User deleted successfully');
   }
 }

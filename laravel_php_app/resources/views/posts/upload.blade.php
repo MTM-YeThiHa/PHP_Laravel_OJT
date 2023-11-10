@@ -19,7 +19,7 @@
           {{ session('success') }}
         </div>
         @endif
-        <form enctype="multipart/form-data" method="POST">
+        <form action="{{'/post/upload'}}" enctype="multipart/form-data" method="POST">
           @csrf
           <div class="form-group row card-body">
             <label for="csv_file" class="col-md-4 col-form-label text-md-right required">{{__('CSV FILE')}}</label>
@@ -33,9 +33,9 @@
             </div>
           </div>
           <div class="form-group row mb-0">
-            <div class="col-md-6 offset-md-4">
-              <button type="submit" class="btn btn-primary">{{__('Upload')}}</button>
-              <button type="reset" class="btn btn-danger">{{__('Clear')}}</button>
+            <div class="col-md-6 offset-md-4 justify-content-around">
+              <button type="submit" class="btn btn-success">{{__('Upload')}}</button>
+              <button type="reset" class="btn btn-secondary">{{__('Clear')}}</button>
             </div>
           </div>
         </form>

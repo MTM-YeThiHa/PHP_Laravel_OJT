@@ -46,11 +46,15 @@ function showUserDetail(userInfo) {
     }
     $("#user-detail #user-email").text(userInfo.email);
     $("#user-detail #user-phone").text(userInfo.phone);
-    $("#user-detail #user-dob").text(moment(userInfo.dob).format("YYYY/MM/DD"));
+    $("#user-detail #user-dob").text(userInfo.dob ? moment(userInfo.dob).format("YYYY/MM/DD") : '');
     $("#user-detail #user-address").text(userInfo.address);
     $("#user-detail #user-profile").attr(
         "src",
-        `/storage/images/${userInfo.profile}`
+        `/storage/profiles/${userInfo.profile}`
+    );
+    $("#user-detail #user-profile-default").attr(
+        "src",
+        `/public/images/default_profile.jpg`
     );
     $("#user-detail #user-created-at").text(
         moment(userInfo.created_at).format("YYYY/MM/DD")
@@ -83,22 +87,3 @@ function showDeleteConfirm(userInfo) {
     $("#user-delete #user-dob").text(userInfo.dob);
     $("#user-delete #user-address").text(userInfo.address);
 }
-
-// /**
-//  * To delete user by id
-//  * @returns void
-//  */
-// async function deleteUserById(csrf_token) {
-//     await $.ajax({
-//         url: "/user/delete/" + $("#user-delete #user-id").text(),
-//         type: "DELETE",
-//         data: {
-//             _token: csrf_token
-//         },
-//         dataType: "text",
-//         success: function(result) {
-//             console.log(result);
-//             location.reload();
-//         }
-//     });
-// }

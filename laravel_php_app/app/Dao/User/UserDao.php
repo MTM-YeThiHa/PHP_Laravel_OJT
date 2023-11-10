@@ -47,8 +47,8 @@ class UserDao implements UserDaoInterface
     $user->password = Hash::make($validated['password']);
     $user->profile = $profileName ?? '';
     $user->type = $validated['type'] ?? '1';
-    $user->phone = $validated['phone'] ?? '';
-    $user->dob = $validated['dob'] ?? '';
+    $user->type = $validated['phone'] ?? '';
+    $user->dob = empty($validated['dob']) ? now() : $validated['dob'];
     $user->address = $validated['address'] ?? '';
     $user->created_user_id = Auth::user()->id ?? '1';
     $user->updated_user_id = Auth::user()->id ?? '1';
@@ -59,17 +59,19 @@ class UserDao implements UserDaoInterface
   //update user
   public function updateUser(Request $request)
   {
+    // dd($request);
     $user = User::find(Auth::user()->id);
+    $type = $request['type'] === 'User' ? 1 : 0;
     $user->name = $request['name'];
     $user->email = $request['email'];
     $user->profile = $request['profile'];
-    $user->type = $request['type'];
+    $user->type = $type;
     $user->phone = $request['phone'];
     $user->dob = $request['dob'];
     $user->address = $request['address'];
     $user->updated_user_id = Auth::user()->id;
     $user->save();
-    return "user update";
+    return $user;
   }
 
   //change user password

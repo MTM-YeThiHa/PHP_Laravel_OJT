@@ -36,9 +36,7 @@
                 @else(old('type') == '1')
                 <input id="type" type="text" class="form-control" name="type" value="User" readonly="readonly" />
                 @endif
-                <select class="form-control @error('type') is-invalid @enderror hide-input" name="type" readonly="readonly">
-                  <option value="{{ old('type') }}" selected></option>
-                </select>
+                
               </div>
             </div>
 
@@ -79,16 +77,16 @@
               <label class="col-md-4 col-form-label text-md-right">{{ __('Profile') }}</label>
               <div class="col-md-6">
                 <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
-                  <input id="profile" type="text" class="form-control hide-input" name="profile" required value="{{ session('profileName') }}" autocomplete="profile" readonly="readonly" />
-                  <img class="preview-profile card-img-top object-fit-cover" src="{{asset('storage/images/'. session('profileName'))}}" />
+                  <input id="profile" type="text" class="form-control hide-input" name="profile" required value="{{ session('profile') }}" autocomplete="profile" readonly="readonly" />
+                  <img class="preview-profile card-img-top object-fit-cover" src="{{Storage::url('profiles/') . Session::get('profile')}}" />
                 </div>
 
               </div>
             </div>
 
             <div class="form-group row mb-0">
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary">
+              <div class="col-md-6 offset-md-4 d-flex justify-content-around">
+                <button type="submit" class="btn btn-success">
                   {{ __('Confirm') }}
                 </button>
                 <a class="cancel-btn btn btn-secondary" onClick="window.history.back()">{{ __('Cancel') }}</a>

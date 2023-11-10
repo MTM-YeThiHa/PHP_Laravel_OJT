@@ -23,8 +23,9 @@ $(document).on("change", "#profile", function() {
                   "background-size":
                       previewWidth + "px " + previewHeight + "px",
                   border: "1px solid rgb(206, 212, 218)",
-                  borderRadius: "3px",
+                  borderRadius: "5%",
                   display: "block",
+                  margin: "0 auto"
               });
           };
       };

@@ -3,20 +3,33 @@
 
 <!-- Style -->
 <link rel="stylesheet" href="{{asset('css/post-list.css')}}">
+<!-- <link href="{{ asset('css/lib/jquery.dataTables.min.css') }}" rel="stylesheet"> -->
 <!-- Script -->
 <script src="{{ asset('js/post-list.js') }}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="{{ asset('js/lib/jquery.dataTables.min.js') }}"></script> -->
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-16">
+            @if (Session::has('message'))
+            <div class="alert alert-success d-flex align-items-center alert-dismissible fade show mx-auto" style="max-width: 25%;" role="alert">
+                <div>
+                    <span><i class="fa-solid fa-check"></i></span>
+                    {{session::get('message')}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
             <div class="card">
-                <div class="card-header text-bg-success">{{ __('Post List') }}</div>
+                <div class="card-header text-bg-success">
+                    <h5>{{ __('Post List') }}</h5>
+                </div>
                 <div class="card-body">
                     <div class="container">
                         <div class="row d-flex justify-content-end">
-                            <div class="col-auto">
+                            <div class="col-auto d-flex">
                                 <label class="p-2 search-lbl fw-semibold">Keyword:</label>
-                            </div>
-                            <div class="col-auto">
                                 <form method="post" action="{{ route('postSearch') }}" class="d-flex">
                                     @csrf
                                     <div class="mx-1">
@@ -26,8 +39,6 @@
                                         <button type="submit" class="btn btn-success mb-2 search-btn" id="search-click">Search</button>
                                     </div>
                                 </form>
-                            </div>
-                            <div class="col-auto">
                                 @if(auth()->user() && (auth()->user()->type == 0 || auth()->user()->type == 1))
                                 <a class="btn btn-success header-btn" href="/post/create">{{ __('Create') }}</a>
                                 <a class="btn btn-success header-btn" href="/post/upload">{{ __('Upload') }}</a>
@@ -57,12 +68,13 @@
                                 @else
                                 @foreach ($postList as $post)
                                 <tr>
-                                    <td>
-                                        <a class="post-name text-decoration-none" type="button" onclick="showPostDetail({{json_encode($post)}})" data-bs-toggle="modal" data-bs-target="#post-detail-popup">{{$post->title}}</a>
-                                    <td>{{$post->description}}</td>
-                                    <td>{{$post->created_user}}</td>
+                                    <td class="abbreviation">
+                                        <a class="post-name text-decoration-none abbreviation" type="button" onclick="showPostDetail({{json_encode($post)}})" data-bs-toggle="modal" data-bs-target="#post-detail-popup">{{$post->title}}</a>
+                                    </td>
+                                    <td class="abbreviation">{{$post->description}}</td>
+                                    <td class="abbreviation">{{$post->created_user}}</td>
                                     <td>{{date('Y/m/d', strtotime($post->created_at))}}</td>
-                                    @if(auth()->user() && (auth()->user()->type == 0 || auth()->user()->type == 1)&& $post->created_user_id == auth()->user()->id)
+                                    @if(auth()->user() && (auth()->user()->type == 0 || $post->created_user_id == auth()->user()->id))
                                     <td>
                                         <a type="button" class="btn btn-primary" href="/post/edit/{{$post->id}}"><i class="fa fa-edit"></i>Edit</a>
                                         <button onclick="showDeleteConfirm({{json_encode($post)}})" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#post-delete-popup"><i class="fa fa-trash"></i>Delete</button>

@@ -27,7 +27,7 @@ class UserRegisterRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'profile' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'type' => ['required'],
-            'phone' => ['max:20'],
+            'phone' => ['max:15'],
             'address' => ['max:255'],
             'dob' => []
         ];

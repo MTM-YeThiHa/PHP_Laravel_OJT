@@ -23,13 +23,31 @@ class PostDao implements PostDaoInterface
 
     public function getPostList()
     {
-        $postList = DB::table('posts as post')
-            ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
-            ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
-            ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-            ->whereNull('post.deleted_at')
-            ->paginate(5);
-        return $postList;
+        if (Auth::check()) {
+            $loggedInUserId = Auth::user()->id;
+            $postList = DB::table('posts as post')
+                ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+                ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+                ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+                ->where(function ($query) use ($loggedInUserId) {
+                    $query->where('post.status', '!=', '0') // show inactive posts
+                        ->orWhere('post.created_user_id', $loggedInUserId); // show posts created by the logged-in user
+                })
+                ->whereNull('post.deleted_at') // exclude soft-deleted posts
+                ->paginate(5);
+            return $postList;
+        } else {
+            // User is not authenticated, show all active posts
+            $postList = DB::table('posts as post')
+                ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+                ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+                ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+                ->where('post.status', '!=', '0') // show all active posts
+                ->whereNull('post.deleted_at') // exclude soft-deleted posts
+                ->paginate(5);
+
+            return $postList;
+        }
     }
 
     /**
@@ -79,7 +97,7 @@ class PostDao implements PostDaoInterface
         } else {
             $post->status = '0';
         }
-        // $post->updated_user_id = Auth::user()->id;
+        $post->updated_user_id = Auth::user()->id;
         $post->save();
         return $post;
     }
@@ -99,8 +117,8 @@ class PostDao implements PostDaoInterface
             if (count($row) >= 2) {
                 try {
                     $post = new Post();
-                    $post->title = $row[1];
-                    $post->description = $row[2];
+                    $post->title = $row['title'];
+                    $post->description = $row['description'];
                     $post->created_user_id = $uploadedUserId ?? 1;
                     $post->updated_user_id = $uploadedUserId ?? 1;
                     $post->save();
@@ -133,50 +151,34 @@ class PostDao implements PostDaoInterface
         return dd('post uploaded');
     }
 
-    /**
-     * To save post via API
-     * @param array $validated Validated values from request
-     * @return Object created post object
-     */
-    public function savePostAPI($validated)
-    {
-        $post = new Post();
-        // $post->title = $validated['title'];
-        // $post->description = $validated['description'];
-        // $post->created_user_id = Auth::guard('api')->user()->id ?? 1;
-        // $post->updated_user_id = Auth::guard('api')->user()->id ?? 1;
-        $post->save();
-        return $post;
-    }
-
-    /**
-     * To update post by id via api
-     * @param array $validated Validated values from request
-     * @param string $postId Post id
-     * @return Object $post Post Object
-     */
-    public function updatedPostByIdAPI($validated, $postId)
-    {
-        $post = Post::find($postId);
-        $post->title = $validated['title'];
-        $post->description = $validated['description'];
-        $post->status = $validated["status"];
-        // $post->updated_user_id = Auth::guard('api')->user()->id;
-        $post->save();
-        return $post;
-    }
-
+    // public function filterPost(Request $request)
+    // {
+    //     $search = $request['search'];
+    //     $postList = DB::table('posts as post')
+    //         ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+    //         ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+    //         ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+    //         ->where('post.title', 'like', "%$search%")
+    //         ->orWhere('post.description', 'like', "%$search%")
+    //         ->whereNull('post.deleted_at')
+    //         ->paginate(5);
+    //     return $postList;
+    // }
     public function filterPost(Request $request)
     {
         $search = $request['search'];
-        $postList = DB::table('posts as post')
+        $query = DB::table('posts as post')
             ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
             ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
             ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-            ->where('post.title', 'like', "%$search%")
-            ->orWhere('post.description', 'like', "%$search%")
-            ->whereNull('post.deleted_at')
-            ->paginate(5);
+            ->whereNull('post.deleted_at');
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('post.title', 'like', "%$search%")
+                    ->orWhere('post.description', 'like', "%$search%");
+            });
+        }
+        $postList = $query->paginate(5);
         return $postList;
     }
 }

@@ -8,7 +8,9 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">{{ __('Register Confirm') }}</div>
+        <div class="card-header text-bg-success">
+          <h5>{{ __('User Confirm') }}</h5>
+        </div>
         <div class="card-body">
           <form method="POST" action="{{ route('registerConfirm') }}" enctype="multipart/form-data">
             @csrf
@@ -89,14 +91,14 @@
             <div class="form-group row">
               <label class="col-md-4 col-form-label text-md-right">{{ __('Profile') }}</label>
               <div class="col-md-6">
-                <input id="profile" type="text" class="form-control hide-input" name="profile" required value="{{ session('profileName') }}" autocomplete="profile" readonly="readonly" />
-                <img class="preview-profile" src="{{session('profilePath')}}" />
+                <input id="profile" type="text" class="form-control hide-input" name="profile" required value="{{ session('profile') }}" autocomplete="profile" readonly="readonly" />
+                <img class="preview-profile card-img-top object-fit-cover" src="{{Storage::url('profiles/') . Session::get('profile')}}" />
               </div>
             </div>
 
             <div class="form-group row mb-0">
-              <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary">
+              <div class="d-flex col-md-6 offset-md-4 justify-content-around">
+                <button type="submit" class="btn btn-success">
                   {{ __('Confirm') }}
                 </button>
                 <a class="cancel-btn btn btn-secondary" onClick="window.history.back()">{{ __('Cancel') }}</a>

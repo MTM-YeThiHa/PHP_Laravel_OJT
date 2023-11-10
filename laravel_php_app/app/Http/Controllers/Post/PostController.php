@@ -78,7 +78,7 @@ class PostController extends Controller
   public function submitPostCreateConfirmView(Request $request)
   {
     $post = $this->postInterface->savePost($request);
-    return redirect()->route('postlist');
+    return redirect()->route('postlist')->with('message', 'Post created successfully');
     // return dd($post);
   }
 
@@ -149,7 +149,7 @@ class PostController extends Controller
   public function submitPostEditConfirmView(Request $request, $postId)
   {
     $user =  $this->postInterface->updatedPostById($request, $postId);
-    return redirect()->route('postlist');
+    return redirect()->route('postlist')->with('message', 'Post updated successfully');
   }
 
   /**
@@ -171,29 +171,41 @@ class PostController extends Controller
   public function submitPostUploadView(PostUploadRequest $request)
   {
     // validation for request values
-    $validated = $request->validated();
-    $uploadedUserId = Auth::user()->id;
-    $content = $this->postInterface->uploadPostCSV($validated, $uploadedUserId);
-    if (!$content['isUploaded']) {
-      return redirect('/post/upload')->with('error', $content['message']);
-    } else {
-      return redirect()->route('postlist');
-    }
+    // $validated = $request->validated();
+    // $uploadedUserId = Auth::user()->id;
+    // $content = $this->postInterface->uploadPostCSV($validated, $uploadedUserId);
+    // if (!$content['isUploaded']) {
+    //   return redirect('/post/upload')->with('error', $content['message']);
+    // } else {
+    //   return redirect()->route('postlist');
+    // }
     // $request->validate([
     //   'csv_file' => 'required | file | mimes:csv',
     // ]);
-    // $file = $request->file('csv_file');
-    // Excel::import(new PostImport, $file);
-    // return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
+
+    //validate the request 
+    $request->validate([
+      'csv_file' => 'required|file|mimes:csv',
+    ]);
+
+    try {
+      Excel::import(new PostImport, $request->file('csv_file'));
+
+      return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
+    } catch (\Exception $e) {
+      return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
+    }
   }
 
   /**
    * To download post csv file
    * @return File Download CSV file
    */
-  public function downloadPostCSV()
+  public function downloadPostCSV(Request $request)
   {
-    return Excel::download(new PostExport(), 'posts.csv');
+    $search = $request->input('search');
+    $export = new PostExport($search);
+    return Excel::download(new PostExport($search), 'posts.csv');
   }
 
   public function filterPost(Request $request)

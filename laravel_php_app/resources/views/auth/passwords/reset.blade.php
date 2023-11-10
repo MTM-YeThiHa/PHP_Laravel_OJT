@@ -4,7 +4,7 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">Reset Password</div>
+        <div class="card-header text-bg-success">Reset Password</div>
         <div class="card-body">
           <form action="{{route('reset.password.post')}}" method="POST">
             @csrf
@@ -47,7 +47,7 @@
             </div>
 
             <div class="col-md-6 offset-md-4">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-success">
                 Reset Password
               </button>
             </div>

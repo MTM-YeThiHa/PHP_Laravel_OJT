@@ -60,21 +60,6 @@ interface PostServiceInterface
   public function downloadPostCSV();
 
   /**
-   * To save post via API
-   * @param array $validated Validated values from request
-   * @return Object created post object
-   */
-  public function savePostAPI($validated);
-
-  /**
-   * To update post by id via api
-   * @param array $validated Validated values from request
-   * @param string $postId Post id
-   * @return Object $post Post Object
-   */
-  public function updatedPostByIdAPI($validated, $postId);
-
-  /**
    * To filter post by filter post
    * @param array $validated Validated values from request
    * @param string $postId Post id

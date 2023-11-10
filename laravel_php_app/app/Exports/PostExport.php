@@ -8,16 +8,20 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use App\Models\Post;
 
-class PostExport implements FromCollection, FromQuery, WithHeadings
+class PostExport implements FromCollection, WithHeadings
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
     use Exportable;
+
+    private $search;
+
+    public function __construct($search)
+    {
+        $this->search = $search;
+    }
 
     public function collection()
     {
-        return Post::select(
+        $query = Post::select(
             'id',
             'title',
             'description',
@@ -28,7 +32,16 @@ class PostExport implements FromCollection, FromQuery, WithHeadings
             'deleted_at',
             'created_at',
             'updated_at'
-        )->get();
+        );
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', "%$this->search%")
+                    ->orWhere('description', 'like', "%$this->search%");
+            });
+        }
+        echo $this->search;
+        return $query->get();
     }
 
     public function query()

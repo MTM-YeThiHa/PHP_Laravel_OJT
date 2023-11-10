@@ -1,13 +1,13 @@
 @extends('layouts.app')
 @section('content')
 <!-- Styles -->
-<link rel="stylesheet" href="{{ asset('css/email.css') }}">
+<!-- <link rel="stylesheet" href="{{ asset('css/email.css') }}"> -->
 
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
-        <div class="card-header">Reset Password</div>
+        <div class="card-header text-bg-success">Reset Password</div>
         <div class="card-body">
           @if (Session::has('message'))
           <div class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="col-md-6 offset-md-4">
-              <button type="submit" class="btn btn-primary">
+              <button type="submit" class="btn btn-success">
                 Send Password Reset Link
               </button>
             </div>

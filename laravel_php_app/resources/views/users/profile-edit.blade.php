@@ -3,9 +3,18 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
+      @if (Session::has('message'))
+      <div class="alert alert-success d-flex align-items-center alert-dismissible fade show mx-auto" style="max-width: 25%;" role="alert">
+        <div>
+          <span><i class="fa-solid fa-check"></i></span>
+          {{session::get('message')}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+      @endif
       <div class="card">
         <div class="card-header text-bg-success">
-          <h3>{{ __('Profile Edit') }}</h3>
+          <h5>{{ __('Profile Edit') }}</h5>
         </div>
 
         <div class="card-body">
@@ -28,10 +37,8 @@
 
             <div class="form-group row">
               <label for="email" class="col-md-4 col-form-label text-md-right required">{{ __('E-Mail Address') }}</label>
-
               <div class="col-md-6">
                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email">
-
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -69,10 +76,8 @@
 
             <div class="form-group row">
               <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
-
               <div class="col-md-6">
-                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $user->phone }}" autocomplete="phone">
-
+                <input id="phone" type="number" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{$user->phone}}" autocomplete="phone">
                 @error('phone')
                 <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
@@ -122,14 +127,14 @@
               <label for="old-profile" class="col-md-4 col-form-label text-md-right">{{ __('Old Profile') }}</label>
               <div class="col-md-6">
                 <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
-                  <img class="preview-profile card-img-top object-fit-cover" src="{{asset('storage/images/'. $user->profile)}}" />
+                  <img class="preview-profile card-img-top object-fit-cover" src="{{Storage::url('profiles/') . $user->profile}}" />
                 </div>
               </div>
             </div>
 
             <div class="form-group row mb-0">
               <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-success">
                   {{ __('Edit') }}
                 </button>
                 <button type="reset" class="btn btn-secondary">

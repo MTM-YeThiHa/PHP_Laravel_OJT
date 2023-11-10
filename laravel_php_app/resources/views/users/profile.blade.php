@@ -9,14 +9,21 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header text-bg-success">
-                    <h3>{{__('Profile')}}</h3>
+                    <h5>{{__('Profile')}}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-4 col-md-12 col-sm-6 text-align-center mx-auto">
+                            @if($user->profile)
                             <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
-                                <img class="card-img-top object-fit-cover" src="{{ asset('storage/images/'. $user->profile) }}" alt="Profile Image" class="preview-profile">
+                                <img class="card-img-top object-fit-cover" src="{{Storage::url('profiles/') . $user->profile}}" alt="Profile Image" class="preview-profile">
                             </div>
+                            @else
+                            <div class="ratio ratio-1x1 rounded-circle overflow-hidden">
+                                <img class="card-img-top object-fit-cover" src="{{asset('images/default_profile.jpg')}}" alt="Profile Image" class="preview-profile">
+                            </div>
+                            @endif
+
                         </div>
                         <div class="col-lg-8 col-md-12 col-sm-6">
                             <div class="row">
@@ -62,7 +69,7 @@
                                 </label>
                             </div>
                             <div class="">
-                                <a type="button" class="btn btn-primary" href="/user/profile/edit">
+                                <a type="button" class="btn btn-success" href="/user/profile/edit">
                                     {{ __('Edit Profile') }}
                                 </a>
                             </div>

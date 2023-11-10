@@ -10,17 +10,20 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class PostImport implements ToModel, WithValidation, WithUpserts
+class  PostImport implements ToModel, WithValidation, WithUpserts
 {
     /**
      * @param Collection $collection
      */
     public function model(array $row)
     {
+        $title = $row['title'];
+        $description = $row['description'];
+        $status = $row['status'];
         return new Post([
-            'title' => $row[1],
-            'description' => $row[2],
-            'status' => (int)$row[3],
+            'title' => $title,
+            'description' => $description,
+            'status' => (int)$status,
             'created_user_id' => Auth::user()->id ?? $row['created_user_id'],
             'updated_user_id' => Auth::user()->id ?? $row['updated_user_id'],
         ]);

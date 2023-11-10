@@ -28,7 +28,7 @@ class UserEditRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore(Auth::user()->id)],
             'profile' => ['image', 'mimes:jpeg,png,jpg,gif,svg,webp', 'max:2048'],
             'type' => [],
-            'phone' => ['max:20'],
+            'phone' => ['max:15'],
             'address' => ['max:255'],
             'dob' => [],
         ];
