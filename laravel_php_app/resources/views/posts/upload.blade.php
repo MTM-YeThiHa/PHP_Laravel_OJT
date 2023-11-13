@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="form-group row mb-0">
-            <div class="col-md-6 offset-md-4 justify-content-around">
+            <div class="col-md-6 offset-md-4">
               <button type="submit" class="btn btn-success">{{__('Upload')}}</button>
               <button type="reset" class="btn btn-secondary">{{__('Clear')}}</button>
             </div>

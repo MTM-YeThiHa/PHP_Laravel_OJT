@@ -26,6 +26,7 @@ Route::get('reset-password/ {token}', [ForgotPasswordController::class, 'showRes
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
 Route::get('/post/download', [PostController::class, 'downloadPostCSV'])->name('downloadPostCSV');
+Route::get('/post/download/filtered/{search}', [PostController::class, 'downloadFilteredPostCSV'])->name('downloadFilteredPostCSV');
 Route::get('/post/list', [PostController::class, 'showPostList'])->name('postlist');
 Route::get('/post/search', [PostController::class, 'showPostList'])->name('postlist.search');
 Route::post('/post/search', [PostController::class, 'filterPost'])->name('postSearch');

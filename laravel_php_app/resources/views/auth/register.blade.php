@@ -82,9 +82,8 @@
                         <div class="form-group row">
                             <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
 
-                            <div class="col-md-8">
-                                <input id="phone" type="number" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone">
-
+                            <div class="col-md-6">
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone">
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -133,7 +132,7 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="d-flex col-md-6 offset-md-4 justify-content-around">
+                            <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-success">
                                     {{ __('Register') }}
                                 </button>

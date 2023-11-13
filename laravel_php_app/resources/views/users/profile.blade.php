@@ -59,7 +59,7 @@
                             <div class="row">
                                 <label class="col-md-3 text-md-left">{{ __('Date of Birth') }}</label>
                                 <label class="col-md-9 text-md-left">
-                                    <i class="profile-text">{{date('Y/m/d', strtotime($user->dob))}}</i>
+                                    <i class="profile-text">{{ $user->dob ? date('Y/m/d', strtotime($user->dob)) : '' }}</i>
                                 </label>
                             </div>
                             <div class="row">

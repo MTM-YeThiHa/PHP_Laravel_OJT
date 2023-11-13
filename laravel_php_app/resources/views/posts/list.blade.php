@@ -43,7 +43,12 @@
                                 <a class="btn btn-success header-btn" href="/post/create">{{ __('Create') }}</a>
                                 <a class="btn btn-success header-btn" href="/post/upload">{{ __('Upload') }}</a>
                                 @endif
-                                <a class="btn btn-success header-btn" href="/post/download">{{ __('Download') }}</a>
+                                @if($search)
+                                <a class="btn btn-success header-btn" href="{{ url('/post/download/filtered/' . $search) }}">{{ __('Download') }}</a>
+                                @else
+                                <a class="btn btn-success header-btn" href="{{ url('/post/download') }}">{{ __('Download') }}</a>
+                                @endif
+
                             </div>
                         </div>
                     </div>

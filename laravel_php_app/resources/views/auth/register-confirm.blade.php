@@ -52,7 +52,6 @@
                 <select class="form-control @error('type') is-invalid @enderror hide-input" name="type" readonly="readonly">
                   <option value="{{ old('type') }}" selected>{{config('usertype.user_types')[old('type')]}}</option>
                 </select>
-                <!-- <input id="text_type" type="text" class="form-control" name="text_type" value="{{old('type')}}" readonly="readonly" /> -->
               </div>
             </div>
 
@@ -97,7 +96,7 @@
             </div>
 
             <div class="form-group row mb-0">
-              <div class="d-flex col-md-6 offset-md-4 justify-content-around">
+              <div class="col-md-6 offset-md-4">
                 <button type="submit" class="btn btn-success">
                   {{ __('Confirm') }}
                 </button>

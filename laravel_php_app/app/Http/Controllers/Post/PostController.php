@@ -91,9 +91,10 @@ class PostController extends Controller
 
   public function showPostList()
   {
+    $search = '';
     $posts = Post::paginate(5);
     $postList = $this->postInterface->getPostList();
-    return view('posts.list', compact('postList'));
+    return view('posts.list', compact('postList', 'search'));
   }
 
   //delete post by Id
@@ -201,16 +202,35 @@ class PostController extends Controller
    * To download post csv file
    * @return File Download CSV file
    */
-  public function downloadPostCSV(Request $request)
+  public function downloadPostCSV()
   {
-    $search = $request->input('search');
-    $export = new PostExport($search);
-    return Excel::download(new PostExport($search), 'posts.csv');
+    $export = new PostExport(null);
+    return Excel::download($export, 'posts.csv');
+  }
+
+  public function downloadFilteredPostCSV(Request $request, $search)
+  {
+   // Correcting the assignment of $search
+   $search = $request->input('search');
+
+   $posts = Post::query()
+       ->select('id', 'title', 'description', 'status', 'created_user_id', 'updated_user_id', 'deleted_user_id', 'deleted_at', 'created_at', 'updated_at')
+       ->when($search, function ($query) use ($search) {
+           $query->where(function ($q) use ($search) {
+               $q->where('title', 'like', "%$search%")
+                   ->orWhere('description', 'like', "%$search%");
+           });
+       })
+       ->get();
+
+   // Return only the filtered posts in JSON format
+   return response()->json($posts);
   }
 
   public function filterPost(Request $request)
   {
+    $search = $request->search;
     $postList = $this->postInterface->filterPost($request);
-    return view('posts.list', compact('postList'));
+    return view('posts.list', compact('postList', 'search'));
   }
 }

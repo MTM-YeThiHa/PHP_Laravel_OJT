@@ -23,13 +23,21 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max: 255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max: 255', 'unique:users','regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'profile' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'type' => ['required'],
-            'phone' => ['max:15'],
+            'phone' => ['numeric', 'max:11'],
             'address' => ['max:255'],
             'dob' => []
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'email' => "The email must be in a valid email format.",
+            'phone' => "only numbers and 11 digits are allowed.",
         ];
     }
 }
