@@ -67,7 +67,6 @@ Route::get('/user/change-password', [UserController::class, 'showChangePasswordV
 Route::post('/user/change-password', [UserController::class, 'savePassword'])->name('change.password');
 
 //admin authorized
-//Route::group(['middleware' => ['admin']], function () {}
 Route::group(['middleware' => ['auth']], function () {
     Route::get('user/list', [UserController::class, 'showUserList'])->name('userlist');
     Route::get('user/register', [RegisterController::class, 'showRegistrationView'])->name('register');

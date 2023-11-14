@@ -188,9 +188,6 @@ class PostController extends Controller
     //validate the request 
     $validator = Validator::make($request->all(), $request->rules());
     try {
-      $uploadedUserId = Auth::user()->id;
-      $import = new PostImport();
-      $import->setUserId($uploadedUserId);
       Excel::import(new PostImport, $request->file('csv_file'));
 
       return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
@@ -209,9 +206,27 @@ class PostController extends Controller
     return Excel::download($export, 'posts.csv');
   }
 
-  public function downloadFilteredPostCSV(Request $request, $search)
+  // public function downloadFilteredPostCSV(Request $request, $search)
+  // {
+  //   // Correcting the assignment of $search
+  //   $search = $request->input('search');
+
+  //   $posts = Post::query()
+  //     ->select('id', 'title', 'description', 'status', 'created_user_id', 'updated_user_id', 'deleted_user_id', 'deleted_at', 'created_at', 'updated_at')
+  //     ->when($search, function ($query) use ($search) {
+  //       $query->where(function ($q) use ($search) {
+  //         $q->where('title', 'like', "%$search%")
+  //           ->orWhere('description', 'like', "%$search%");
+  //       });
+  //     })
+  //     ->get();
+
+  //   // Return only the filtered posts in JSON format
+  //   return response()->json($posts);
+  // }
+
+  public function downloadFilteredPostCSV(Request $request)
   {
-    // Correcting the assignment of $search
     $search = $request->input('search');
 
     $posts = Post::query()
@@ -223,10 +238,10 @@ class PostController extends Controller
         });
       })
       ->get();
-
-    // Return only the filtered posts in JSON format
-    return response()->json($posts);
+    // return Response::make($csvContent, 200, $headers);
+    return Excel::download($posts, 'filtered_posts.csv');
   }
+
 
   public function filterPost(Request $request)
   {

@@ -6,38 +6,27 @@ use App\Models\Post;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithValidation;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class  PostImport implements ToModel, WithValidation, WithUpserts
+class  PostImport implements ToModel, WithUpserts, WithHeadingRow
 {
     /**
      * @param Collection $collection
      */
 
-     private $userId;
-
-     public function setUserId($userId)
+     public function model(array $row)
      {
-         $this->userId = $userId;
+        
+         return new Post([
+             'title'=>$row['title'],
+             'description'=>$row['description'],
+             'status'=>$row['status'],
+             'created_user_id'=>Auth::user()->id?? $row['created_user_id'],
+             'updated_user_id'=>Auth::user()->id?? $row['updated_user_id'],
+         ]);
      }
-
-    public function model(array $row)
-    {
-        $title = $row['title'];
-        $description = $row['description'];
-        $status = $this->convertStatus($row['status']);
-
-        return new Post([
-            'title' => $title,
-            'description' => $description,
-            'status' => $status,
-            'created_user_id' => Auth::user()->id ?? $row['created_user_id'],
-            'updated_user_id' => Auth::user()->id ?? $row['updated_user_id'],
-        ]);
-    }
 
     public function rules(): array
     {
