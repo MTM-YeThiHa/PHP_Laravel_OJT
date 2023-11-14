@@ -190,10 +190,10 @@ class PostController extends Controller
     try {
       Excel::import(new PostImport, $request->file('csv_file'));
 
-      return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
-    } catch (\Exception $e) {
-      return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
-    }
+    //   return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
+    // } catch (\Exception $e) {
+    //   return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
+    // }
   }
 
   /**
