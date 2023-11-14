@@ -7,7 +7,6 @@ use App\Contracts\Dao\Post\PostDaoInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\PostUploadRequest;
 use Illuminate\Support\Facades\Validator;
 
 class PostDao implements PostDaoInterface
@@ -103,53 +102,6 @@ class PostDao implements PostDaoInterface
         $post->save();
         return $post;
     }
-
-    /**
-     * To upload csv file for post
-     * @param array $validated Validated values
-     * @param string $uploadedUserId uploaded user id
-     * @return array $content Message and Status of CSV Uploaded or not
-     */
-    // public function uploadPostCSV($validated, $uploadedUserId)
-    // {
-    //     $path =  $validated['csv_file']->getRealPath();
-    //     $csv_data = array_map('str_getcsv', file($path));
-    //     // save post to Database accoding to csv row
-    //     foreach ($csv_data as $index => $row) {
-    //         if (count($row) >= 2) {
-    //             try {
-    //                 $post = new Post();
-    //                 $post->title = $row['title'];
-    //                 $post->description = $row['description'];
-    //                 $post->created_user_id = $uploadedUserId ?? 1;
-    //                 $post->updated_user_id = $uploadedUserId ?? 1;
-    //                 $post->save();
-    //             } catch (\Illuminate\Database\QueryException $e) {
-    //                 $errorCode = $e->errorInfo[1];
-    //                 //error handling for duplicated post
-    //                 if ($errorCode == '1062') {
-    //                     $content = array(
-    //                         'isUploaded' => false,
-    //                         'message' => 'Row number (' . ($index + 1) . ') is duplicated title.'
-    //                     );
-    //                     return $content;
-    //                 }
-    //             }
-    //         } else {
-    //             // error handling for invalid row.
-    //             $content = array(
-    //                 'isUploaded' => false,
-    //                 'message' => 'Row number (' . ($index + 1) . ') is invalid format.'
-    //             );
-    //             return $content;
-    //         }
-    //     }
-    //     $content = array(
-    //         'isUploaded' => true,
-    //         'message' => 'Uploaded Successfully!'
-    //     );
-    //     return $content;
-    // }
 
     public function uploadPostCSV(array $validated, $uploadedUserId)
     {

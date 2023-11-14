@@ -28,30 +28,6 @@ class  PostImport implements ToModel, WithUpserts, WithHeadingRow
          ]);
      }
 
-    public function model(array $row)
-    {
-       
-        return new Post([
-            'title'=>$row['title'],
-            'description'=>$row['description'],
-            'status'=>$row['status'],
-            'created_user_id'=>Auth::user()->id?? $row['created_user_id'],
-            'updated_user_id'=>Auth::user()->id?? $row['updated_user_id'],
-        ]);
-    }
-
-    // public function rules(): array
-    // {
-    //     return [
-    //         'title' => 'required',
-    //         'description' => 'required',
-    //         'status' => [
-    //             'required',
-    //             Rule::in(['Active', 'Inactive']),
-    //         ],
-    //     ];
-    // }
-
     public function ValidationMessages()
     {
         return [
@@ -65,10 +41,5 @@ class  PostImport implements ToModel, WithUpserts, WithHeadingRow
     public function uniqueBy()
     {
         return 'id';
-    }
-
-    protected function convertStatus($status)
-    {
-        return strtolower($status) == 'active' ? 1 : 0;
     }
 }
