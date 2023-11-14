@@ -187,16 +187,17 @@ class PostController extends Controller
 
     //validate the request 
     $validator = Validator::make($request->all(), $request->rules());
-    try {
-      $uploadedUserId = Auth::user()->id;
-      $import = new PostImport();
-      $import->setUserId($uploadedUserId);
-      Excel::import(new PostImport, $request->file('csv_file'));
+    // try {
+    //   $uploadedUserId = Auth::user()->id;
+    //   $import = new PostImport();
+    //   $import->setUserId($uploadedUserId);
+    $file = $request['csv_file'];
+    Excel::import(new PostImport, $file);
 
-      return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
-    } catch (\Exception $e) {
-      return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
-    }
+    //   return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
+    // } catch (\Exception $e) {
+    //   return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
+    // }
   }
 
   /**
