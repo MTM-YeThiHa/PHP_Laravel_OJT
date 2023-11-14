@@ -51,7 +51,7 @@ interface PostDaoInterface
    * @param string $uploadedUserId uploaded user id
    * @return array $content Message and Status of CSV Uploaded or not
    */
-  public function uploadPostCSV($validated, $uploadedUserId);
+  public function uploadPostCSV(array $validated, $uploadedUserId);
 
    /**
    * To filter post by filter post

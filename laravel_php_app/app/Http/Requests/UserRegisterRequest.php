@@ -27,7 +27,7 @@ class UserRegisterRequest extends FormRequest
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'profile' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'type' => ['required'],
-            'phone' => ['numeric', 'max:11'],
+            'phone' => ['regex:/^[0-9]+$/', 'min:9', 'max:11'],
             'address' => ['max:255'],
             'dob' => []
         ];
@@ -37,7 +37,9 @@ class UserRegisterRequest extends FormRequest
     {
         return [
             'email' => "The email must be in a valid email format.",
-            'phone' => "only numbers and 11 digits are allowed.",
+            'phone.regex' => "only numbers are allowed.",
+            'phone.min' => "phone number must be at least 9 digits.",
+            'phone.max' => "phone number must be at most 11 digits.",
         ];
     }
 }
