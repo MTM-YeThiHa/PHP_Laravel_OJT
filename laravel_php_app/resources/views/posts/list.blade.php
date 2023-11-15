@@ -94,9 +94,8 @@
 					</div>
 
 					<div class="row d-flex">
-						<div class="d-flex">
-							<form class="col-md-4" method="GET" action="{{ url()->current() }}">
-								<div class="pagination d-flex align-items-center">
+							<form class="col-md-4 d-flex justify-content-start" style="align-items: baseline;" method="GET" action="{{ url()->current() }}">
+								<div class="pagination d-flex justify-content-center align-items-center">
 									<label for="perPage" style="width: 120px;">Posts List Page: </label>
 									<select class="form-select" id="perPage" name="perPage" onchange="this.form.submit()" style="width: 70px;">
 										<option value="6" {{ $postList->perPage() == 6 ? 'selected' : '' }}>6</option>
@@ -107,16 +106,16 @@
 									</select>
 								</div>
 							</form>
-							<div class="col-md-4 d-flex align-items-center">
+							<div class="pagination col-md-4 d-flex justify-content-center align-items-center">
 								<p class="align-items-center" style="margin-right: 10px">Showing {{ $postList->firstItem() }} to
 									{{ $postList->lastItem() }} of total
 									{{ $postList->total() }} entries
 								</p>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4 d-flex justify-content-center align-items-center">
 								{{ $postList->appends(['perPage' => $postList->perPage()])->links() }}
 							</div>
-						</div>
+						
 					</div>
 
 					<div class="modal fade" id="post-detail-popup" tabindex="-1" aria-label="exampleModalLabel" aria-hidden="true">

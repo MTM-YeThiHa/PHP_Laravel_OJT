@@ -37,11 +37,11 @@
                             </div>
                         </div>
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4 d-flex">
-                                <button type="submit" class="btn btn-success">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-success mx-1">
                                     {{ __('Confirm') }}
                                 </button>
-                                <a class="cancel-btn btn btn-secondary" onClick="window.history.back()">{{ __('Cancel') }}</a>
+                                <a class="cancel-btn btn btn-secondary mx-1" onClick="window.history.back()">{{ __('Cancel') }}</a>
                             </div>
                         </div>
                     </form>

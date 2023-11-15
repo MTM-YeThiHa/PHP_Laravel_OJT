@@ -33,8 +33,8 @@
                             </div>
                             <div class="form-group row mb-0 mt-2">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-success">Submit</button>
-                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn btn-success mx-1">Submit</button>
+                                    <button type="reset" class="btn btn-secondary mx-1">Cancel</button>
                                 </div>
                             </div>
                         </form>

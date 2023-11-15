@@ -24,8 +24,18 @@ class UserPasswordChangeRequest extends FormRequest
     {
         return [
             'current_password' => ['required', new MatchOldPassword],
-            'new_password' => ['required'],
+            'new_password' => ['required', 'min:8'],
             'new_confirm_password' => ['same:new_password'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'current_password.required' => 'Current password is required',
+            'new_password.required' => 'New password is required',
+            'new_password.min' => 'New password must be at least 8 characters',
+            'new_confirm_password.same' => 'New password and confirm password must be same',
         ];
     }
 }

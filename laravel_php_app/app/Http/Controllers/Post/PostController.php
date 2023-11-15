@@ -15,6 +15,7 @@ use App\Exports\PostExport;
 use App\Imports\PostImport;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class PostController extends Controller
 {
@@ -178,6 +179,8 @@ class PostController extends Controller
     try {
       Excel::import(new PostImport, $request->file('csv_file'));
       return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
+    } catch (ValidationException $e) {
+      return redirect('/post/upload')->withErrors($e->errors())->with('error', 'Validation failed during the CSV file import.');
     } catch (\Exception $e) {
       return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
     }
@@ -196,15 +199,15 @@ class PostController extends Controller
   public function downloadFilteredPostCSV(Request $request, $search)
   {
     $query = DB::table('posts as post')
-        ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
-        ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
-        ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-        ->whereNull('post.deleted_at');
+      ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+      ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+      ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+      ->whereNull('post.deleted_at');
     if ($search) {
-        $query->where(function ($q) use ($search) {
-            $q->where('post.title', 'like', "%$search%")
-                ->orWhere('post.description', 'like', "%$search%");
-        });
+      $query->where(function ($q) use ($search) {
+        $q->where('post.title', 'like', "%$search%")
+          ->orWhere('post.description', 'like', "%$search%");
+      });
     }
     $postList = $query->paginate(5);
     return Excel::download(new PostExport($postList), 'posts.csv');

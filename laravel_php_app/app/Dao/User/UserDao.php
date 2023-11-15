@@ -132,7 +132,7 @@ class UserDao implements UserDaoInterface
       $userList->whereBetween('user.created_at', [$fromDate, $toDate]);
       $searchKeywords[] = "Date Range: $fromDate - $toDate";
     }
-    $userList = $userList->paginate(5);
+    // $userList = $userList->paginate(5);
     // return view('search-results', ['userList' => $userList, 'searchKeywords' => $searchKeywords]);
     return $userList;
   }

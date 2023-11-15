@@ -9,8 +9,9 @@ use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
+use Maatwebsite\Excel\Concerns\WithValidation;
 
-class  PostImport implements ToModel, WithUpserts, WithHeadingRow
+class  PostImport implements ToModel, WithUpserts, WithHeadingRow, WithValidation
 {
     /**
      * @param Collection $collection
@@ -28,6 +29,15 @@ class  PostImport implements ToModel, WithUpserts, WithHeadingRow
          ]);
      }
 
+     public function rules(): array 
+     {
+        return [
+            'title' => ['required', Rule::unique('posts', 'title')],
+            'description' => 'required',
+            'status' => 'required',
+        ];
+     }
+
     public function ValidationMessages()
     {
         return [
@@ -35,6 +45,7 @@ class  PostImport implements ToModel, WithUpserts, WithHeadingRow
             'description.required' => 'The description field is required',
             'status.required' => 'The status field is required',
             'status.in' => 'The status must be either "Active" or "Inactive',
+            'title.unique' => 'The title must not be the same',
         ];
     }
 

@@ -19,6 +19,15 @@
           {{ session('success') }}
         </div>
         @endif
+        @if (Session::has('message'))
+        <div class="auto-close alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert">
+          <div>
+            <span><i class="fa-solid fa-check"></i></span>
+            {{session::get('message')}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        </div>
+        @endif
         <form action="{{'/post/upload'}}" enctype="multipart/form-data" method="POST">
           @csrf
           <div class="form-group row card-body">

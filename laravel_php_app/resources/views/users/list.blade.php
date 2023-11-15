@@ -192,9 +192,8 @@
           </div>
 
           <div class="row d-flex">
-						<div class="d-flex">
 							<form class="col-md-4" method="GET" action="{{ url()->current() }}">
-								<div class="pagination d-flex align-items-center">
+								<div class="pagination d-flex justify-content-center align-items-center">
 									<label for="perPage" style="width: 120px;">Posts List Page: </label>
 									<select class="form-select" id="perPage" name="perPage" onchange="this.form.submit()" style="width: 70px;">
 										<option value="6" {{ $userList->perPage() == 6 ? 'selected' : '' }}>6</option>
@@ -205,16 +204,15 @@
 									</select>
 								</div>
 							</form>
-							<div class="col-md-4 d-flex align-items-center">
+							<div class="col-md-4 d-flex justify-content-center align-items-center">
 								<p class="align-items-center" style="margin-right: 10px">Showing {{ $userList->firstItem() }} to
 									{{ $userList->lastItem() }} of total
 									{{ $userList->total() }} entries
 								</p>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-4 d-flex justify-content-center align-items-center">
 								{{ $userList->appends(['perPage' => $userList->perPage()])->links() }}
 							</div>
-						</div>
 					</div>
 
           <div class="modal fade" id="delete-confirm" tabindex="-1" role="dialog">
