@@ -143,13 +143,42 @@ class UserController extends Controller
     return redirect()->route('profile')->with('message', 'User profile edited successfully');
   }
 
+  // public function userSearch(Request $request)
+  // {
+  //   $pageSize = $request->input('perPage', 6);
+  //   $userList = User::paginate($pageSize);
+  //   $userList = $this->userInterface->userSearch($request);
+  //   return view('users.list', compact('userList'));
+  // }
+
   public function userSearch(Request $request)
-  {
-    $pageSize = $request->input('perPage', 6);
-    $userList = User::paginate($pageSize);
-    $userList = $this->userInterface->userSearch($request);
-    return view('users.list', compact('userList'));
-  }
+    {
+        $pagesize = 6;
+        if($request['perPage']){
+            $pagesize = $request['perPage'];
+        }
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $from = $request->input('from');
+        $to = $request->input('to');
+        $userList = DB::table('users as user')
+            ->join('users as created_user', 'user.created_user_id', '=', 'created_user.id')
+            ->join('users as updated_user', 'user.updated_user_id', '=', 'updated_user.id')
+            ->select('user.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+            ->whereNull('user.deleted_at')
+            ->orderBy('user.created_at','desc')
+            ->when(!empty($email), function ($query) use ($email) {
+                return $query->where('user.email', 'like', "%$email%");
+            })
+            ->when(!empty($name), function ($query) use ($name) {
+                return $query->where('user.name', 'like', "%$name%");
+            })
+            ->when(!empty($from) && !empty($to), function ($query) use ($from, $to) {
+                return $query->whereBetween('user.created_at', [$from, $to]);
+            })
+            ->paginate($pagesize);
+        return view('users.list', compact('userList'));
+    }
 
   /**
    * To delete user by id

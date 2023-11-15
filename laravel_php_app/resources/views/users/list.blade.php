@@ -66,7 +66,7 @@
                 </tr>
               </thead>
               <tbody>
-                @if (empty($userList))
+                @if ($userList->isEmpty())
                 <tr>
                   <td colspan="12" class="table-active text-center">No Data Available!</td>
                 </tr>

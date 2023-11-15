@@ -40,8 +40,6 @@ Route::get('/', function () {
 });
 
 //visitor, user, admin authorized
-
-// 'Post\PostController@showPostList'
 Route::group(['middleware' => ['auth']], function () {
     Route::get('post/create', [PostController::class, 'showPostCreateView'])->name('create.post');
     Route::post('/post/create', [PostController::class, 'submitPostCreateView'])->name('create.post');

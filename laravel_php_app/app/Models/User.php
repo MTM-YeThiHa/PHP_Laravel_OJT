@@ -19,9 +19,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'id', 'name', 'email', 'password', 'profile', 'type', 'phone', 'dob', 'address', 'created_user_id', 'updated_user_id',
     ];
 
     /**
@@ -43,11 +41,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    protected $created_user;
-
-    public function getCreatedUserAttribute()
-    {
-        return $this->created_user;
-    }
 }
