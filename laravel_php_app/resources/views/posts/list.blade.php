@@ -112,7 +112,7 @@
 									{{ $postList->total() }} entries
 								</p>
 							</div>
-							<div class="col-md-4 d-flex justify-content-center align-items-center">
+							<div class="col-md-4 d-flex justify-content-end align-items-center">
 								{{ $postList->appends(['perPage' => $postList->perPage()])->links() }}
 							</div>
 						
