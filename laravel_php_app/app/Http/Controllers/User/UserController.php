@@ -9,7 +9,7 @@ use App\Http\Requests\UserPasswordChangeRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use Symfony\Component\HttpKernel\Profiler\Profile;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -33,11 +33,23 @@ class UserController extends Controller
    *
    * @return View User list
    */
-  public function showUserList()
+  public function showUserList(Request $request)
   {
-    $users = User::paginate(5);
-    $userList = $this->userInterface->getUserList();
-    return view('users.list', compact('userList'));
+    $pagesize = 6;
+        if($request['perPage']){
+            $pagesize = $request['perPage'];
+        }
+        $userList = DB::table('users as user')
+            ->join('users as created_user', 'user.created_user_id', '=', 'created_user.id')
+            ->join('users as updated_user', 'user.updated_user_id', '=', 'updated_user.id')
+            ->select('user.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+            ->whereNull('user.deleted_at')
+            ->orderBy('user.created_at','desc')
+            ->Paginate($pagesize);
+        return view('users.list', compact('userList')); //crd YHA
+    // $pageSize = $request->input('perPage', 6);
+    // $userList = User::paginate($pageSize);
+    // return view('users.list', compact('userList'));
   }
 
   /**
@@ -68,21 +80,11 @@ class UserController extends Controller
    *
    * @return View UserProfile
    */
-  // public function showUserProfile()
-  // {
-  //   $userId = Auth::user()->id;
-  //   $user = $this->userInterface->getUserById($userId);
-  //   return view('users.profile', compact('user'));
-  // }
 
   public function showUserProfile()
   {
     $userId = Auth::user()->id;
     $user = $this->userInterface->getUserById($userId);
-
-    // Assuming the user's profile image path is stored in the 'profile_image' field.
-    // $profileImagePath = $user->profile_image;
-
     return view('users.profile', compact('user'));
   }
 
@@ -143,6 +145,8 @@ class UserController extends Controller
 
   public function userSearch(Request $request)
   {
+    $pageSize = $request->input('perPage', 6);
+    $userList = User::paginate($pageSize);
     $userList = $this->userInterface->userSearch($request);
     return view('users.list', compact('userList'));
   }

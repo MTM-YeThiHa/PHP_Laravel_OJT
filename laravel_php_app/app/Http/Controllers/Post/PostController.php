@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PostExport;
 use App\Imports\PostImport;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -90,11 +91,11 @@ class PostController extends Controller
    * @return View post create confirm
    */
 
-  public function showPostList()
+  public function showPostList(Request $request)
   {
     $search = '';
-    $posts = Post::paginate(5);
-    $postList = $this->postInterface->getPostList();
+    $pageSize = $request->input('perPage', 6);
+    $postList = Post::paginate($pageSize);
     return view('posts.list', compact('postList', 'search'));
   }
 
@@ -174,9 +175,8 @@ class PostController extends Controller
   {
     //validate the request 
     $validator = Validator::make($request->all(), $request->rules());
-    Excel::import(new PostImport, $request->file('csv_file'));
     try {
-
+      Excel::import(new PostImport, $request->file('csv_file'));
       return redirect()->route('postlist')->with('success', 'CSV file uploaded successfully.');
     } catch (\Exception $e) {
       return redirect('/post/upload')->with('error', 'An error occurred during the CSV file import.');
@@ -187,34 +187,39 @@ class PostController extends Controller
    * To download post csv file
    * @return File Download CSV file
    */
-  public function downloadPostCSV() 
-{
-  $export = new PostExport(null);
-  return Excel::download($export, 'posts.csv');
-}
-
-  public function downloadFilteredPostCSV(Request $request)
+  public function downloadPostCSV()
   {
-    $search = $request->input('search');
-
-    $posts = Post::query()
-      ->select('id', 'title', 'description', 'status', 'created_user_id', 'updated_user_id', 'deleted_user_id', 'deleted_at', 'created_at', 'updated_at')
-      ->when($search, function ($query) use ($search) {
-        $query->where(function ($q) use ($search) {
-          $q->where('title', 'like', "%$search%")
-            ->orWhere('description', 'like', "%$search%");
-        });
-      })
-      ->get();
-    // return Response::make($csvContent, 200, $headers);
-    return Excel::download($posts, 'filtered_posts.csv');
+    $post = Post::all();
+    return Excel::download(new PostExport($post), 'posts.csv');
   }
 
+  public function downloadFilteredPostCSV(Request $request, $search)
+  {
+    $query = DB::table('posts as post')
+        ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+        ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+        ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+        ->whereNull('post.deleted_at');
+    if ($search) {
+        $query->where(function ($q) use ($search) {
+            $q->where('post.title', 'like', "%$search%")
+                ->orWhere('post.description', 'like', "%$search%");
+        });
+    }
+    $postList = $query->paginate(5);
+    return Excel::download(new PostExport($postList), 'posts.csv');
+  }
 
   public function filterPost(Request $request)
   {
     $search = $request->search;
-    $postList = $this->postInterface->filterPost($request);
+    $pageSize = $request->input('perPage', 6);
+    $postList = Post::where(function ($q) use ($search) {
+      $q->where('title', 'like', "%$search%")
+        ->orWhere('description', 'like', "%$search%");
+    })
+      ->paginate($pageSize);
+    $postList->appends(['search' => $search]);
     return view('posts.list', compact('postList', 'search'));
   }
 }

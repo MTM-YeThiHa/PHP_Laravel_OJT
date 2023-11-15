@@ -34,8 +34,8 @@ class PostDao implements PostDaoInterface
                     $query->where('post.status', '!=', '0') // show inactive posts
                         ->orWhere('post.created_user_id', $loggedInUserId); // show posts created by the logged-in user
                 })
-                ->whereNull('post.deleted_at') // exclude soft-deleted posts
-                ->paginate(5);
+                ->whereNull('post.deleted_at'); // exclude soft-deleted posts
+            // ->paginate(6);
             return $postList;
         } else {
             // User is not authenticated, show all active posts
@@ -45,7 +45,7 @@ class PostDao implements PostDaoInterface
                 ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
                 ->where('post.status', '!=', '0') // show all active posts
                 ->whereNull('post.deleted_at') // exclude soft-deleted posts
-                ->paginate(5);
+                ->paginate();
 
             return $postList;
         }
@@ -163,19 +163,19 @@ class PostDao implements PostDaoInterface
 
     public function filterPost(Request $request)
     {
-        $search = $request['search'];
-        $query = DB::table('posts as post')
-            ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
-            ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
-            ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-            ->whereNull('post.deleted_at');
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('post.title', 'like', "%$search%")
-                    ->orWhere('post.description', 'like', "%$search%");
-            });
-        }
-        $postList = $query->paginate(5);
-        return $postList;
+        // $search = $request['search'];
+        // $query = DB::table('posts as post')
+        //     ->join('users as created_user', 'post.created_user_id', '=', 'created_user.id')
+        //     ->join('users as updated_user', 'post.updated_user_id', '=', 'updated_user.id')
+        //     ->select('post.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
+        //     ->whereNull('post.deleted_at');
+        // if ($search) {
+        //     $query->where(function ($q) use ($search) {
+        //         $q->where('post.title', 'like', "%$search%")
+        //             ->orWhere('post.description', 'like', "%$search%");
+        //     });
+        // }
+        // $postList = $query->paginate(5);
+        // return $postList;
     }
 }

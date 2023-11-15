@@ -2,49 +2,79 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Models\Post;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class PostExport implements FromCollection, WithHeadings
+class PostExport implements FromCollection, WithHeadings, WithMapping
 {
-  use Exportable;
+  /**
+   * @return \Illuminate\Support\Collection
+   */
+  private $data;
 
-  private $search;
-
-  public function __construct($search)
+  public function __construct($data)
   {
-    $this->search = $search;
+    $this->data = $data;
   }
 
   public function collection()
   {
-    $query = Post::select(
-      'id',
-      'title',
-      'description',
-      DB::raw('(CASE WHEN status = 1 THEN "Active" ELSE "Inactive" END) as status_text'),
-      DB::raw('(SELECT name FROM users WHERE id = posts.created_user_id) as created_user_name'),
-      DB::raw('(SELECT name FROM users WHERE id = posts.updated_user_id) as updated_user_name'),
-      DB::raw('(SELECT name FROM users WHERE id = posts.deleted_user_id) as deleted_user_name'),
-      'deleted_at',
-      'created_at',
-      'updated_at'
-    );
-    if ($this->search) {
-      $query->where(function ($q) {
-        $q->where('title', 'like', "%$this->search%")
-          ->orWhere('description', 'like', "%$this->search%");
-      });
-    }
-    return $query->get();
+    return $this->data;
   }
+  // public function columnWidths(): array
+  // {
+  //     return [
+  //         'A' => 20, // Set the width of column A to 15 units
+  //         'B' => 20, // Set the width of column B to 20 units
+  //         'C' => 20,
+  //         'D' => 20, // Set the width of column
+  //         'E' => 20, // Set the width of column
+  //         'F' => 20,
+  //         'G' => 20,
+  //         'H' => 25,
+  //         'I' => 25,
+  //         'J' => 25,
+  //     ];
+  // }
 
   public function headings(): array
   {
-    return ['ID', 'Title', 'Description', 'Status', 'Created User ID', 'Updated User ID', 'Deleted User ID', 'Deleted At', 'Created At', 'Updated At'];
+    return [
+      'id',
+      'title',
+      'description',
+      'status',
+      'created_user_id',
+      'updated_user_id',
+      'deleted_user_id',
+      'created_at',
+      'updated_at',
+      'deleted_at',
+    ];
+  }
+
+
+  public function map($post): array
+  {
+    $deletedAt = $post->deleted_at ? date('Y/m/d', strtotime($post->deleted_at)) : '';
+    $status = $post->status == '0' ? 'Inactive' : 'Active';
+    return [
+      $post->id,
+      $post->title,
+      $post->description,
+      $status,
+      $post->created_user_id,
+      $post->updated_user_id,
+      $post->deleted_user_id,
+      date('Y/m/d', strtotime($post->created_at)),
+      date('Y/m/d', strtotime($post->updated_at)),
+      $deletedAt,
+    ];
   }
 }

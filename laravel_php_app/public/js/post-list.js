@@ -2,9 +2,9 @@
  * To set data table
  */
 $(document).ready(function () {
-  const postTable = $("#post-list").DataTable({
-    sDom: "lrtip"
-  });
+  // const postTable = $("#post-list").DataTable({
+  //   sDom: "lrtip"
+  // });
 
   $("#search-click").click(function () {
     postTable.search($("#search-keyword").val()).draw();

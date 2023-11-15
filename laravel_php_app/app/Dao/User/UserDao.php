@@ -32,8 +32,7 @@ class UserDao implements UserDaoInterface
       ->join('users as created_user', 'user.created_user_id', '=', 'created_user.id')
       ->join('users as updated_user', 'user.updated_user_id', '=', 'updated_user.id')
       ->select('user.*', 'created_user.name as created_user', 'updated_user.name as updated_user')
-      ->whereNull('user.deleted_at')
-      ->paginate(5);
+      ->whereNull('user.deleted_at');
     return $userList;
   }
 
