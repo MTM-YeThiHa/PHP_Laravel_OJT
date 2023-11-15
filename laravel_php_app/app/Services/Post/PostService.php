@@ -42,9 +42,9 @@ class PostService implements PostServiceInterface
      * To get post list
      * @return array $postList Post list
      */
-    public function getPostList()
+    public function getPostList(Request $request)
     {
-        return $this->postDao->getPostList();
+        return $this->postDao->getPostList($request);
     }
 
     //deletePostById
@@ -89,40 +89,13 @@ class PostService implements PostServiceInterface
    * @return File Download CSV file
    */
   public function downloadPostCSV()
-  {
-    $postList = $this->postDao->getPostList();
-    $filename = "post.csv";
-    //write csv file
-    $handle = fopen($filename, 'w+');
-    fputcsv($handle, array('Title', 'Description', 'Posted User', 'Posted Date'));
-
-    foreach ($postList as $row) {
-      fputcsv($handle, array(
-        $row->title, $row->description, $row->created_user,
-        date('Y/m/d', strtotime($row->created_at))
-      ));
-    }
-
-    fclose($handle);
-
-    $headers = array(
-      'Content-Type' => 'text/csv',
-    );
-
-    return response()
-      ->download($filename, $filename, $headers)
-      ->deleteFileAfterSend();
-  }
+  {}
 
     /**
    * To save post via API
    * @param array $validated Validated values from request
    * @return Object created post object
    */
-  public function savePostAPI($validated)
-  {
-    return $this->postDao->savePostAPI($validated);
-  }
 
     /**
    * To update post by id via api
@@ -130,10 +103,6 @@ class PostService implements PostServiceInterface
    * @param string $id Post id
    * @return Object $post Post Object
    */
-  public function updatedPostByIdAPI($validated, $postId)
-  {
-    return $this->postDao->updatedPostByIdAPI($validated, $postId);
-  }
 
   /**
    * To filter post by filter post

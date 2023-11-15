@@ -20,7 +20,7 @@ interface PostDaoInterface
    * To get post list
    * @return $postList
    */
-  public function getPostList();
+  public function getPostList(Request $request);
 
   /**
    * To delete post by id

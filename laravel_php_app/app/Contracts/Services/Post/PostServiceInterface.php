@@ -20,7 +20,7 @@ interface PostServiceInterface
    * To get post list
    * @return array $postList Post list
    */
-  public function getPostList();
+  public function getPostList(Request $request);
 
   /**
    * To delete post by id

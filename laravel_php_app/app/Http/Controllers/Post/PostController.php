@@ -95,9 +95,14 @@ class PostController extends Controller
   public function showPostList(Request $request)
   {
     $search = '';
-    $pageSize = $request->input('perPage', 6);
-    $postList = Post::paginate($pageSize);
+    // $pageSize = $request->input('perPage', 6);
+    // $postList = Post::paginate($pageSize);
+    $postList = $this->postInterface->getPostList($request);
     return view('posts.list', compact('postList', 'search'));
+
+    // session()->forget('filteredPostList');
+    //     $postList = $this->postInterface->getAllPosts($request);
+    //     return view('post.list', compact('postList'));
   }
 
   //delete post by Id

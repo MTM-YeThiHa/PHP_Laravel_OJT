@@ -78,7 +78,7 @@
 										<a class="post-name text-decoration-none abbreviation" type="button" onclick="showPostDetail({{json_encode($post)}})" data-bs-toggle="modal" data-bs-target="#post-detail-popup">{{$post->title}}</a>
 									</td>
 									<td class="abbreviation">{{$post->description}}</td>
-									<td class="abbreviation">{{$post->user->name}}</td>
+									<td class="abbreviation">{{$post->created_user}}</td>
 									<td>{{date('Y/m/d', strtotime($post->created_at))}}</td>
 									@if(auth()->user() && (auth()->user()->type == 0 || $post->created_user_id == auth()->user()->id))
 									<td>
